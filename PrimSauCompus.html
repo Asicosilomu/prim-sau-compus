@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Prim sau compus?</title>
+		<script type="text/javascript">
+			window.primsaucompus = function(num, uselogs) {
+				// Dacă utilizatorul dorește să utilizeze log-urile...
+				if (uselogs == true) {
+					// Creem o variabilă în care să stocăm un istoric al tuturor acțiunilor executate
+					var log = ""
+				}
+				// Dacă valoarea furnizată este de tip NUMBER și nu este egală cu 1
+				if (typeof num == "number" && num != 1 && isNaN(num) != true) {
+					log = "Se verifică dacă numărul " + num + " este prim sau compus."
+					// Punem toate numerele de la 2 până la [num] într-un șir
+					var sir = []
+					// Stocăm numărul curent în variabila i1 (îl setăm la 2 deoarece de acolo dorim să începem)
+					var i1 = 2
+					// Cât timp i1 este mai mic decât numărul furnizat...
+					while (i1 <= num) {
+						// Scriem un mesaj informativ în log.
+						log = log + "\n" + "Se adaugă numărul " + i1.toString() + " în șir."
+						// Introducem numărul curent (i1) în șir
+						sir.push(i1)
+						// Creștem valoarea i1 cu 1, pentru a trece la următorul număr
+						i1 = i1 + 1
+						// Acest while se va opri când numărătoarea va ajunge la [num]
+					}
+					// Creem un nou i1, îl setăm la 0 și rulăm acest cod cât timp i1 este mai mic decât lungimea șirului
+					// După fiecare executare creștem i1 cu 1 (i1++)
+					for (i1 = 0; i1 < sir.length; i1++) {
+						// Dacă valoarea din șir care corespunde cu indexul i1 nu este null (adică a fost tăiată deja din șir)...
+						if (sir[i1] != null) {
+							// Scriem un mesaj informativ în log.
+							log = log + "\n" + "Se șterg toți multiplii lui " + sir[i1].toString() + "."
+							// Creem un i2, îl setăm la 0 și rulăm acest cod cât timp i2 este mai mic decât lungimea șirului
+							for (i2 = 0; i2 < sir.length; i2++) {
+								// Dacă valoarea din șir care corespunde cu indexul i2 nu este null (adică a fost tăiată deja din șir)...
+								if (sir[i2] != null && sir[i1] < sir[i2]) {
+									if (log && uselogs == true) {
+										// Scriem un mesaj informativ în log.
+										log = log + "\n" + "Se verifică dacă " + sir[i2].toString() + " este un multiplu al lui " + sir[i1].toString() + "."
+									}
+									// Dacă primul număr nu este egal cu numărul 2 și Nr2:Nr1 fără punct zecimal este egal cu Nr2:Nr1 (adică împărțirea Nr2:Nr1 nu dă rest)...
+									if (sir[i1] != sir[i2] && Math.floor(sir[i2] / sir[i1]) == sir[i2] / sir[i1]) {
+										if (log && uselogs == true) {
+											// Scriem un mesaj informativ în log.
+											log = log + "\n" + sir[i2].toString() + " este un multiplu al lui " + sir[i1].toString() + "; se elimină din șir."
+										}
+										// Dacă valoarea de eliminat este egală cu numărul de verificat, înseamnă că este compus.
+										if(sir[i2] == num) {
+											// Numărul este compus.
+											if (log && uselogs == true) {
+												return log + "\n" + num.toString() + " a fost eliminat din șir, deci este COMPUS.";
+											} else {
+												return num.toString() + " a fost eliminat din șir, deci este COMPUS."
+											}
+										// În caz contrar, ștergem valoarea și ne vedem de treaba noastră.
+										} else {
+											// Ștergem valoarea din șir care corespunde cu indexul i2 (o setăm la null)
+											delete sir[i2];
+										}
+									}
+								} else if (sir[i2] != null) {
+									if (log && uselogs == true) {
+										if (sir[i1] > sir[i2]) {
+											// Scriem un mesaj informativ în log.
+											log = log + "\n" + "Numărul " + sir[i2].toString() + " este mai mic decât " + sir[i1].toString() + ", deci nu mai trebuie să verificăm dacă este un multiplu al său."
+										} else if (sir[i1] = sir[i2]) {
+											// Scriem un mesaj informativ în log.
+											log = log + "\n" + "Numărul " + sir[i2].toString() + " este egal cu " + sir[i1].toString() + ", deci nu mai trebuie să verificăm dacă este un multiplu al său."
+										}
+									}
+								}
+							}
+						}
+					}
+					// După ce toată minunăția aceea rulează, vom avea șirul nostru inițial dar doar cu numere prime (cele compuse au fost transformate în NULL)
+					// Acum verificăm dacă șirul nostru nou include numărul furnizat (num)
+					if (sir.includes(num)) {
+						// Dacă îl include (nu a fost șters, tăiat) numărul este PRIM
+						if (log && uselogs == true) {
+							return log + "\n" + num.toString() + " a rămas în șir, deci este PRIM.";
+						} else {
+							return num.toString() + " a rămas în șir, deci este PRIM.";
+						}
+					} else {
+						// În caz contrar, este compus
+						if (log && uselogs == true) {
+							return log + "\n" + num.toString() + " nu este prezent în șir, deci este COMPUS.";
+						} else {
+							return num.toString() + " nu este prezent în șir, deci este COMPUS.";
+						}
+					}
+				} else {
+					if (num == 1) {
+						// Dacă valoarea furnizată este 1, înapoiem o eroare
+						var err = new Error("Numărul furnizat nu poate fi 1.")
+						err.name = "TypeError"
+						throw err
+					} else {
+						// Dacă valoarea furnizată nu este de tip NUMBER, înapoiem o eroare
+						var err = new Error("Valoarea furnizată nu este un număr sau nu a fost furnizată o valoare.")
+						err.name = "TypeError"
+						throw err
+					}
+				}
+			}
+		</script>
+	</head>
+	<body style="font-family: Noto Sans, Roboto, Sans Serif">
+	<center>
+		<h1>Prim sau compus?</h1>
+		<p>Vezi dacă un număr este prim sau compus!</p>
+		<br>
+		<input type="number" id="num" placeholder="2" onkeypress="if(event.keyCode == 13) { try { var result = window.primsaucompus(parseInt(document.querySelector('#num').value), document.querySelector('#uselogs').checked); document.querySelector('#output').value = document.querySelector('#output').value + '\n\n' + result; document.querySelector('#output').scrollTop = document.querySelector('#output').scrollHeight; } catch(e) { document.querySelector('#output').value = document.querySelector('#output').value + '\n\n[EROARE] ' + e.toString(); document.querySelector('#output').scrollTop = document.querySelector('#output').scrollHeight; } }"></input>
+		<button onclick="try { var result = window.primsaucompus(parseInt(document.querySelector('#num').value), document.querySelector('#uselogs').checked); document.querySelector('#output').value = document.querySelector('#output').value + '\n\n' + result; document.querySelector('#output').scrollTop = document.querySelector('#output').scrollHeight; } catch(e) { document.querySelector('#output').value = document.querySelector('#output').value + '\n\n[EROARE] ' + e.toString(); document.querySelector('#output').scrollTop = document.querySelector('#output').scrollHeight; }">Du-te și vezi!</button>
+		<br>
+		<br>
+		<input type="checkbox" id="uselogs" checked="true"></input>
+		<label for="uselogs">Utilizează log-ul (recomandat să fie dezactivat când lucrați cu numere <i>foarte</i> mari)</label>
+		<br>
+		<br>
+		<textarea id="output" style="width: 90vw; height: 20vh; resize: vertical" readonly>Vei vedea rezultatul aici odată ce apeși pe butonul "Du-te și vezi".</textarea>
+	</center>
+	</body>
+</html>
